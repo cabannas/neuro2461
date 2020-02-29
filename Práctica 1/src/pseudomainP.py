@@ -9,6 +9,7 @@ fichero = "problema_real1.txt"
 umbral = 0.2
 porcen_train = 0.7
 a = 0.3  # tasa de aprendizaje
+maxEpocas = 100
 
 # Lectura de fichero
 f = open(fichero)
@@ -57,7 +58,8 @@ pesos = []
 for neurona in capa0:
     pesos.append(neurona.enlaceSalida.peso)
 
-while True:
+contadorEpocas = 0
+while True and contadorEpocas < maxEpocas:
     flag = False  # sin cambios en los pesos
     for entrada in train:
         for i, neurona in enumerate(capa0):
@@ -75,3 +77,4 @@ while True:
     # comparar bien los pesos (la bandera creo que no funciona o algo está mal porque no para)
     if not flag:
         break
+    contadorEpocas += 1
