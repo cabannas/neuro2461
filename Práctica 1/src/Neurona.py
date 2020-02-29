@@ -1,6 +1,8 @@
 import numpy as np
 from abc import ABCMeta, abstractmethod
 
+from Enlace import Enlace
+
 
 class Neurona:
     # Clase abstracta
@@ -88,17 +90,16 @@ class NeuronaMPY(Neurona):
 class NeuronaPX(Neurona):
 
     def __init__(self):
-        self.enlacesSalida = np.array([])
+        self.enlaceSalida = Enlace()  # No se si esto está bien, no recuerdo como lo hiciste tu
 
     def recibirSenal(self, entrada):
-        for enlace in self.enlacesSalida:
-            enlace.enviarValor(entrada)
+        self.enlaceSalida.enviarValor(entrada)
 
     def funcionActivacion(self):
         pass
 
     def addEnlaceSalida(self, enlace):
-        self.enlacesSalida = np.append(self.enlacesSalida, enlace)
+        self.enlaceSalida = enlace
 
 
 class NeuronaPY(Neurona):
@@ -110,10 +111,10 @@ class NeuronaPY(Neurona):
     def recibirSenal(self, entrada):
         self.valores = np.append(self.valores, entrada)
 
-    def funcionActivacion(self, b):
-        if np.sum(self.valores)+b > self.umbral:
+    def funcionActivacion(self, b):  # Esto puede dar problemas, ya que no sigue la estructura de la clase Padre
+        if np.sum(self.valores) + b > self.umbral:
             salida = 1
-        elif np.sum(self.valores)+b < -self.umbral:
+        elif np.sum(self.valores) + b < -self.umbral:
             salida = -1
         else:
             salida = 0
