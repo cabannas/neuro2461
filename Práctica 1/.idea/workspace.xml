@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f75a3bee-31ec-485a-a698-2118a71c8d41" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Neurona.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Neurona.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ipynb" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1Y2HQs54y2OB06V32DR91uZ9RGD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f75a3bee-31ec-485a-a698-2118a71c8d41" name="Default Changelist" comment="" />
+      <created>1582133755357</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1582133755357</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="422" y="198" width="1076" height="719" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582134074627">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="422" y="198" width="1076" height="719" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1582134074627" />
+    <state x="467" y="175" width="986" height="742" key="SettingsEditor" timestamp="1582133772935">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="467" y="175" width="986" height="742" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1582133772935" />
+  </component>
+</project>
