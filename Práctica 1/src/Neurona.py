@@ -90,7 +90,7 @@ class NeuronaMPY(Neurona):
 class NeuronaPX(Neurona):
 
     def __init__(self):
-        self.enlaceSalida = Enlace()  # No se si esto está bien, no recuerdo como lo hiciste tu
+        self.enlaceSalida = Enlace(0, self, self)  # No se si esto está bien, no recuerdo como lo hiciste tu
 
     def recibirSenal(self, entrada):
         self.enlaceSalida.enviarValor(entrada)
