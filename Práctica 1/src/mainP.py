@@ -61,8 +61,6 @@ clases = primera_linea[1]
 
 datos = np.empty((0, atributos + 1), float)
 
-# for i in range lineas_entrada[0]
-
 for linea in lineas_entrada[1:]:
     linea_cortada = list(map(float, ' '.join(linea.split()).replace("\n", "").replace("  "," ").split(" ")))
     dato = linea_cortada[0:atributos]
@@ -135,7 +133,7 @@ for neurona in capa0:
     pesos.append(neurona.enlaceSalida.peso)
 
 contadorEpocas = 0
-while True and contadorEpocas < maxEpocas:
+while True:
     flag = False  # sin cambios en los pesos
     for entrada in train:
         for i, neurona in enumerate(capa0):
@@ -157,6 +155,10 @@ while True and contadorEpocas < maxEpocas:
         print("Entrenamiento finalizado al no cambiar los pesos ni el sesgo.")
         break
     contadorEpocas += 1
+    if contadorEpocas >= maxEpocas:
+        print("Entrenamiento finalizado al alcanzar el número máximo de épocas.")
+        break
+
 
 print("Épocas realizadas:" + str (contadorEpocas))
 print(pesos)

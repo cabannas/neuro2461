@@ -9,12 +9,12 @@ import random
 
 # Lectura del fichero
 
-if len(sys.argv) < 5:
+if len(sys.argv) < 6:
     print("introduzca la cantidad de parámetros correcta, para mas información utilice el makefile")
 
 modo = 0
 
-if len(sys.argv) == 5:
+if len(sys.argv) == 6:
     # Modo 2
     modo = 2
     print("Modo 2")
@@ -35,19 +35,22 @@ if modo == 1:
     else:
         porcen_train = float(sys.argv[2])
     umbral = float(sys.argv[3])
-    a = float(sys.argv[4])  # tasa de apredizaje
-    maxEpocas = int(sys.argv[5])
+    tolerancia = float(sys.argv[4])
+    a = float(sys.argv[5])  # tasa de apredizaje
+    maxEpocas = int(sys.argv[6])
 elif modo == 2:
     fichero = sys.argv[1]
     umbral = float(sys.argv[2])
-    a = float(sys.argv[3])  # tasa de apredizaje
-    maxEpocas = int(sys.argv[4])
+    tolerancia = float(sys.argv[3])
+    a = float(sys.argv[4])  # tasa de apredizaje
+    maxEpocas = int(sys.argv[5])
 else:
     fichero = sys.argv[1]
     fichero2 = sys.argv[2]
     umbral = float(sys.argv[3])
-    a = float(sys.argv[4])  # tasa de apredizaje
-    maxEpocas = int(sys.argv[4])
+    tolerancia = float(sys.argv[4])
+    a = float(sys.argv[5])  # tasa de apredizaje
+    maxEpocas = int(sys.argv[6])
 
 
 # Lectura de fichero
@@ -60,8 +63,6 @@ atributos = primera_linea[0]
 clases = primera_linea[1]
 
 datos = np.empty((0, atributos + 1), float)
-
-# for i in range lineas_entrada[0]
 
 for linea in lineas_entrada[1:]:
     linea_cortada = list(map(float, ' '.join(linea.split()).replace("\n", "").replace("  "," ").split(" ")))
@@ -99,9 +100,8 @@ if modo == 3:
         datos2 = np.concatenate((datos2, [dato2]))
 
 # CREACION DE NEURONAS
-
-capa0 = np.array([NeuronaPX() for p in range(atributos)])
-capa1 = np.array([NeuronaPY(umbral)])
+capa0 = np.array([NeuronaAX() for p in range(atributos)])
+capa1 = np.array([NeuronaAY()])
 
 for neurona in capa0:
     enlace = Enlace(0, neurona, capa1[0])
@@ -135,28 +135,30 @@ for neurona in capa0:
     pesos.append(neurona.enlaceSalida.peso)
 
 contadorEpocas = 0
-while True and contadorEpocas < maxEpocas:
+while True:
     flag = False  # sin cambios en los pesos
     for entrada in train:
         for i, neurona in enumerate(capa0):
             neurona.recibirSenal(entrada[i])
-        salida = capa1[0].funcionActivacion(b)
-        if salida != entrada[-1]:
-            for i, neurona in enumerate(capa0):
-                neurona.enlaceSalida.cambiarPeso(neurona.enlaceSalida.peso + a * entrada[-1] * entrada[i])
-            b = b + a * entrada[-1]
+        salida = capa1[0].funcionActivacionEntrenamiento(b)
+        for i, neurona in enumerate(capa0):
+            neurona.enlaceSalida.cambiarPeso(neurona.enlaceSalida.peso + a * (entrada[-1] - salida) * entrada[i])
+        b = b + a * (entrada[-1]-salida)
     for i, neurona in enumerate(capa0):
-        if abs(neurona.enlaceSalida.peso - pesos[i]) != 0:
+        if abs(neurona.enlaceSalida.peso - pesos[i]) > tolerancia:
             flag = True
         pesos[i] = neurona.enlaceSalida.peso
-    if abs(antiguob - b) != 0:
+    if abs(antiguob - b) > tolerancia:
         flag = True
     antiguob = b
     # comparar bien los pesos (la bandera creo que no funciona o algo está mal porque no para)
     if not flag:
-        print("Entrenamiento finalizado al no cambiar los pesos ni el sesgo.")
+        print("Entrenamiento finalizado al no superar la tolerancia al cambiar los pesos ni el sesgo.")
         break
     contadorEpocas += 1
+    if contadorEpocas >= maxEpocas:
+        print("Entrenamiento finalizado al alcanzar el número máximo de épocas.")
+        break
 
 print("Épocas realizadas:" + str (contadorEpocas))
 print(pesos)
