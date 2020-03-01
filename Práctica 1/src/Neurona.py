@@ -8,9 +8,9 @@ class Neurona:
     # Clase abstracta
     __metaclass__ = ABCMeta
 
-    @abstractmethod
-    def funcionActivacion(self):
-        pass
+    #@abstractmethod
+    #def funcionActivacion(self):
+    #    pass
 
     @abstractmethod
     def recibirSenal(self, entrada):
@@ -59,9 +59,6 @@ class NeuronaMPX(Neurona):
         for enlace in self.enlacesSalida:
             enlace.enviarValor(entrada)
 
-    def funcionActivacion(self):
-        pass
-
     def addEnlaceSalida(self, enlace):
         self.enlacesSalida = np.append(self.enlacesSalida, enlace)
 
@@ -90,13 +87,10 @@ class NeuronaMPY(Neurona):
 class NeuronaPX(Neurona):
 
     def __init__(self):
-        self.enlaceSalida = Enlace(0, self, self)  # No se si esto está bien, no recuerdo como lo hiciste tu
+        pass
 
     def recibirSenal(self, entrada):
         self.enlaceSalida.enviarValor(entrada)
-
-    def funcionActivacion(self):
-        pass
 
     def addEnlaceSalida(self, enlace):
         self.enlaceSalida = enlace
@@ -111,7 +105,7 @@ class NeuronaPY(Neurona):
     def recibirSenal(self, entrada):
         self.valores = np.append(self.valores, entrada)
 
-    def funcionActivacion(self, b):  # Esto puede dar problemas, ya que no sigue la estructura de la clase Padre
+    def funcionActivacion(self, b):
         if np.sum(self.valores) + b > self.umbral:
             salida = 1
         elif np.sum(self.valores) + b < -self.umbral:
