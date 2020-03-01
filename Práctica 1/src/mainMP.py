@@ -56,7 +56,7 @@ salida = np.array([])
 capasIntermedias = np.array([capa1, capa2])
 
 # Abrimos el fichero de escritura
-f = open("McCulloch_Pitts.out", "w")
+f = open("../predicciones/McCulloch_Pitts.txt", "w")
 
 # Ejecutamos la red Neuronal
 for j, entrada in enumerate(entradas):

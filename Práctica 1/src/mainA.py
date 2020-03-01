@@ -14,43 +14,41 @@ if len(sys.argv) < 5:
 
 modo = 0
 
-if len(sys.argv[2]) > 3:
-
-    # Modo 3
-    modo = 3
-    print("Modo 3")
-elif int(sys.argv[2]) == 100:
-
+if len(sys.argv) == 5:
     # Modo 2
     modo = 2
     print("Modo 2")
-else:
-
+elif sys.argv[2].replace('.','',1).replace(',','',1).isdigit():
     # Modo 1
     modo = 1
     print("Modo 1")
-
-if modo == 1 or modo == 2:
-    print("Fichero de datos: " + sys.argv[1])
-    print("Porcentaje de train: " + sys.argv[2])
 else:
-    print("Fichero de datos de train: " + sys.argv[1])
-    print("Fichero de datos de test: " + sys.argv[2])
-print("Umbral: " + sys.argv[3])
-print("Tasa de aprendizaje: " + sys.argv[4])
-print("Número máximo de épocas: " + sys.argv[5])
+    # Modo 3
+    modo = 3
+    print("Modo 3")
 
 # cosas que entrarán por argumento
-fichero = sys.argv[1]
-
 if modo == 1:
-    porcen_train = int(sys.argv[2])
-elif modo == 3:
+    fichero = sys.argv[1]
+    if sys.argv[2].isdigit():
+        porcen_train = int(sys.argv[2])/100
+    else:
+        porcen_train = float(sys.argv[2])
+    umbral = float(sys.argv[3])
+    a = float(sys.argv[4])  # tasa de apredizaje
+    maxEpocas = int(sys.argv[5])
+elif modo == 2:
+    fichero = sys.argv[1]
+    umbral = float(sys.argv[2])
+    a = float(sys.argv[3])  # tasa de apredizaje
+    maxEpocas = int(sys.argv[4])
+else:
+    fichero = sys.argv[1]
     fichero2 = sys.argv[2]
+    umbral = float(sys.argv[3])
+    a = float(sys.argv[4])  # tasa de apredizaje
+    maxEpocas = int(sys.argv[4])
 
-umbral = float(sys.argv[3])
-a = float(sys.argv[4])  # tasa de apredizaje
-maxEpocas = int(sys.argv[5])
 
 # Lectura de fichero
 f = open(fichero)
@@ -66,7 +64,7 @@ datos = np.empty((0, atributos + 1), float)
 # for i in range lineas_entrada[0]
 
 for linea in lineas_entrada[1:]:
-    linea_cortada = list(map(float, linea.replace("\n", "").split(" ")))
+    linea_cortada = list(map(float, ' '.join(linea.split()).replace("\n", "").replace("  "," ").split(" ")))
     dato = linea_cortada[0:atributos]
     # doy por hecho que siempre va a haber dos clases:
     if linea_cortada[-2] == 1:
@@ -111,14 +109,12 @@ for neurona in capa0:
 
 # train y test
 if modo == 1:  # en caso de que haya un porcentaje
-
     nDatosTrain = math.ceil(datos.shape[0] * porcen_train)
     indPerm = np.random.permutation(datos.shape[0])
     train = datos[indPerm[: nDatosTrain]]
     test = datos[indPerm[nDatosTrain:]]
 
 elif modo == 2:  # en caso de que no sea con porcentaje y queramos coger todo
-
     train = datos
     test = datos
 
@@ -158,10 +154,11 @@ while True and contadorEpocas < maxEpocas:
     antiguob = b
     # comparar bien los pesos (la bandera creo que no funciona o algo está mal porque no para)
     if not flag:
-        print("bieeeen")
+        print("Entrenamiento finalizado al no cambiar los pesos ni el sesgo.")
         break
     contadorEpocas += 1
 
+print("Épocas realizadas:" + str (contadorEpocas))
 print(pesos)
 print(b)
 
@@ -177,5 +174,5 @@ for entrada in test:
 
 tasaError = fallos / len(test) * 100
 
-print("Tasa Error: " + str(tasaError) + " %")
+print("Tasa Error: " + str(tasaError) + " %\n")
 

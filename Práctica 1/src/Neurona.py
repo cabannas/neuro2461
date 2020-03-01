@@ -114,3 +114,34 @@ class NeuronaPY(Neurona):
             salida = 0
         self.valores = np.array([])
         return salida
+
+class NeuronaAX(Neurona):
+
+    def __init__(self):
+        pass
+
+    def recibirSenal(self, entrada):
+        self.enlaceSalida.enviarValor(entrada)
+
+    def addEnlaceSalida(self, enlace):
+        self.enlaceSalida = enlace
+
+
+class NeuronaAY(Neurona):
+
+    def __init__(self, umbral):
+        self.umbral = umbral
+        self.valores = np.array([])
+
+    def recibirSenal(self, entrada):
+        self.valores = np.append(self.valores, entrada)
+
+    def funcionActivacion(self, b):
+        if np.sum(self.valores) + b > self.umbral:
+            salida = 1
+        elif np.sum(self.valores) + b < -self.umbral:
+            salida = -1
+        else:
+            salida = 0
+        self.valores = np.array([])
+        return salida
