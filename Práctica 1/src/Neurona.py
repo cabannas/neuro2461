@@ -8,8 +8,8 @@ class Neurona:
     # Clase abstracta
     __metaclass__ = ABCMeta
 
-    #@abstractmethod
-    #def funcionActivacion(self):
+    # @abstractmethod
+    # def funcionActivacion(self):
     #    pass
 
     @abstractmethod
@@ -114,6 +114,7 @@ class NeuronaPY(Neurona):
             salida = 0
         self.valores = np.array([])
         return salida
+
 
 class NeuronaAX(Neurona):
 

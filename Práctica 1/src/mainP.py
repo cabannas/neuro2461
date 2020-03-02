@@ -1,4 +1,3 @@
-##
 import numpy as np
 from Neurona import *
 from Enlace import *
@@ -13,42 +12,36 @@ if len(sys.argv) < 5:
     print("introduzca la cantidad de parámetros correcta, para mas información utilice el makefile")
 
 modo = 0
-
-if len(sys.argv) == 5:
-    # Modo 2
-    modo = 2
-    print("Modo 2")
-elif sys.argv[2].replace('.','',1).replace(',','',1).isdigit():
+if sys.argv[2].isdigit() and int(sys.argv[2]) < 100:
     # Modo 1
     modo = 1
     print("Modo 1")
+elif sys.argv[2].isdigit() and int(sys.argv[2]) == 100:
+    # Modo 2
+    modo = 2
+    print("Modo 2")
 else:
     # Modo 3
     modo = 3
     print("Modo 3")
 
-# cosas que entrarán por argumento
-if modo == 1:
-    fichero = sys.argv[1]
-    if sys.argv[2].isdigit():
-        porcen_train = int(sys.argv[2])/100
-    else:
-        porcen_train = float(sys.argv[2])
-    umbral = float(sys.argv[3])
-    a = float(sys.argv[4])  # tasa de apredizaje
-    maxEpocas = int(sys.argv[5])
-elif modo == 2:
-    fichero = sys.argv[1]
-    umbral = float(sys.argv[2])
-    a = float(sys.argv[3])  # tasa de apredizaje
-    maxEpocas = int(sys.argv[4])
-else:
-    fichero = sys.argv[1]
-    fichero2 = sys.argv[2]
-    umbral = float(sys.argv[3])
-    a = float(sys.argv[4])  # tasa de apredizaje
-    maxEpocas = int(sys.argv[4])
 
+porcen_train = 0
+fichero2 = "none"
+# cosas que entrarán por argumento
+
+fichero = sys.argv[1]
+
+if modo == 3:
+    fichero2 = sys.argv[2]
+
+else:  # Modo 1 y Modo 2
+
+    porcen_train = int(sys.argv[2]) / 100
+
+umbral = float(sys.argv[3])
+a = float(sys.argv[4])  # tasa de apredizaje
+maxEpocas = int(sys.argv[5])
 
 # Lectura de fichero
 f = open(fichero)
@@ -62,7 +55,7 @@ clases = primera_linea[1]
 datos = np.empty((0, atributos + 1), float)
 
 for linea in lineas_entrada[1:]:
-    linea_cortada = list(map(float, ' '.join(linea.split()).replace("\n", "").replace("  "," ").split(" ")))
+    linea_cortada = list(map(float, ' '.join(linea.split()).replace("\n", "").replace("  ", " ").split(" ")))
     dato = linea_cortada[0:atributos]
     # doy por hecho que siempre va a haber dos clases:
     if linea_cortada[-2] == 1:
@@ -71,7 +64,6 @@ for linea in lineas_entrada[1:]:
         dato.append(-1)
 
     datos = np.concatenate((datos, [dato]))
-
 
 if modo == 3:
     # Lectura de fichero2
@@ -120,29 +112,33 @@ else:
     train = datos
     test = datos2
 
-print("TRAIN =================")
-print(train)
-print("TEST =================")
-print(test)
 
 antiguob = 0
 b = 0
+
+# AJUSTE DE PESOS
 
 pesos = []
 for neurona in capa0:
     pesos.append(neurona.enlaceSalida.peso)
 
+# ENTRENAMIENTO DE LA RED
+
 contadorEpocas = 0
 while True:
+    errorCuadraticoTrain = 0
+    fallosTrain = 0
     flag = False  # sin cambios en los pesos
     for entrada in train:
         for i, neurona in enumerate(capa0):
             neurona.recibirSenal(entrada[i])
         salida = capa1[0].funcionActivacion(b)
         if salida != entrada[-1]:
+            fallosTrain += 1
             for i, neurona in enumerate(capa0):
                 neurona.enlaceSalida.cambiarPeso(neurona.enlaceSalida.peso + a * entrada[-1] * entrada[i])
             b = b + a * entrada[-1]
+        errorCuadraticoTrain += (entrada[-1] - salida) ** 2
     for i, neurona in enumerate(capa0):
         if abs(neurona.enlaceSalida.peso - pesos[i]) != 0:
             flag = True
@@ -150,31 +146,35 @@ while True:
     if abs(antiguob - b) != 0:
         flag = True
     antiguob = b
-    # comparar bien los pesos (la bandera creo que no funciona o algo está mal porque no para)
+
     if not flag:
-        print("Entrenamiento finalizado al no cambiar los pesos ni el sesgo.")
+        print("\nEntrenamiento finalizado al no cambiar los pesos ni el sesgo.")
         break
     contadorEpocas += 1
     if contadorEpocas >= maxEpocas:
-        print("Entrenamiento finalizado al alcanzar el número máximo de épocas.")
+        print("\nEntrenamiento finalizado al alcanzar el número máximo de épocas.")
         break
+    tasaErrorTrain = fallosTrain / len(train) * 100
+    errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
 
+print("\nÉpocas realizadas:" + str(contadorEpocas))
+print("\nTasa Error en Train: " + str(tasaErrorTrain) + " %")
+print("Error cuadrático en Train: " + str(errorCuadraticoMedioTrain) + "\n")
 
-print("Épocas realizadas:" + str (contadorEpocas))
-print(pesos)
-print(b)
+# TESTEO DE LA RED
 
-# TEST
-fallos = 0
+errorCuadraticoTest = 0
+fallosTest = 0
 for entrada in test:
     for i, neurona in enumerate(capa0):
         neurona.recibirSenal(entrada[i])
     salida = capa1[0].funcionActivacion(b)
-
+    errorCuadraticoTest += (entrada[-1] - salida) ** 2
     if salida != entrada[-1]:
-        fallos += 1
+        fallosTest += 1
 
-tasaError = fallos / len(test) * 100
+tasaErrorTest = fallosTest / len(test) * 100
+errorCuadraticoMedioTest = errorCuadraticoTest / len(test)
 
-print("Tasa Error: " + str(tasaError) + " %\n")
-
+print("Tasa Error en Test: " + str(tasaErrorTest) + " %")
+print("Error cuadrático en Test: " + str(errorCuadraticoMedioTest) + "\n")
