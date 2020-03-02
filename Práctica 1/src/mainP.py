@@ -124,6 +124,7 @@ for neurona in capa0:
 
 # ENTRENAMIENTO DE LA RED
 
+listaECMsTrain = []
 contadorEpocas = 0
 while True:
     errorCuadraticoTrain = 0
@@ -156,6 +157,7 @@ while True:
         break
     tasaErrorTrain = fallosTrain / len(train) * 100
     errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
+    listaECMsTrain.append(errorCuadraticoMedioTrain)
 
 print("\nÉpocas realizadas:" + str(contadorEpocas))
 print("\nTasa Error en Train: " + str(tasaErrorTrain) + " %")
