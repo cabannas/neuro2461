@@ -16,6 +16,7 @@ mp_help:
 mp_exec:
 	@echo un ejemplo de ejecución:
 	python3 mainMP.py ../data/McCulloch_Pitts.txt
+	@echo Se ha generado un fichero McCulloch_Pitts.out en la carpeta de predicciones.
 
 per_help:
 	@echo per_help: explicación de los argumentos necesarios para ejecutar el programa perceptrón

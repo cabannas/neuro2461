@@ -161,6 +161,10 @@ while True:
         flag = True
     antiguob = b
 
+    tasaErrorTrain = fallosTrain / len(train) * 100
+    errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
+    listaECMsTrain.append(errorCuadraticoMedioTrain)
+
     contadorEpocas += 1
     if not flag:
         print("\nEntrenamiento finalizado al no superar la tolerancia al cambiar los pesos o el sesgo.")
@@ -169,9 +173,7 @@ while True:
         print("\nEntrenamiento finalizado al alcanzar el número máximo de épocas.")
         break
 
-    tasaErrorTrain = fallosTrain / len(train) * 100
-    errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
-    listaECMsTrain.append(errorCuadraticoMedioTrain)
+
 
 # Código para realizar la gráfica del error cuadrático medio en train
 
