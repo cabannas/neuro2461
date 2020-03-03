@@ -169,9 +169,16 @@ while True:
         print("\nEntrenamiento finalizado al alcanzar el número máximo de épocas.")
         break
 
-tasaErrorTrain = fallosTrain / len(train) * 100
-errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
-listaECMsTrain.append(errorCuadraticoMedioTrain)
+    tasaErrorTrain = fallosTrain / len(train) * 100
+    errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
+    listaECMsTrain.append(errorCuadraticoMedioTrain)
+
+# Código para realizar la gráfica del error cuadrático medio en train
+
+# floco = open("ecmAda.txt", "w")
+# for ele in listaECMsTrain:
+#     floco.write(str(ele) + "\n")
+# floco.close()
 
 print("\nÉpocas realizadas:" + str(contadorEpocas))
 print("\nTasa Error en Train: " + str(tasaErrorTrain) + " %")

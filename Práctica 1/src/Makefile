@@ -76,7 +76,7 @@ ada_help:
 
 ada_exec:
 	@echo Un ejemplo de ejecución:
-	python3 mainA.py ../data/problema_real2.txt 70 0.2 0.01 0.1 3000
+	python3 mainA.py ../data/problema_real2.txt 70 0.01 0.1 3000
 
 ada_exec_puertas_logicas:
 	@echo Tres ejemplos de ejecución en modo 2:

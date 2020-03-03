@@ -114,7 +114,6 @@ else:
     train = datos
     test = datos2
 
-
 antiguob = 0
 b = 0
 
@@ -145,7 +144,7 @@ while True:
             for i, neurona in enumerate(capa0):
                 neurona.enlaceSalida.cambiarPeso(neurona.enlaceSalida.peso + a * entrada[-1] * entrada[i])
             b = b + a * entrada[-1]
-            if entrada[-1]  == -1:
+            if entrada[-1] == -1:
                 FN += 1
             else:
                 FP += 1
@@ -153,7 +152,7 @@ while True:
             if salida == 1:
                 VP += 1
             else:
-                VN += 1            
+                VN += 1
         errorCuadraticoTrain += (entrada[-1] - salida) ** 2
     for i, neurona in enumerate(capa0):
         if abs(neurona.enlaceSalida.peso - pesos[i]) != 0:
@@ -171,9 +170,16 @@ while True:
         print("\nEntrenamiento finalizado al alcanzar el número máximo de épocas.")
         break
 
-tasaErrorTrain = fallosTrain / len(train) * 100
-errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
-listaECMsTrain.append(errorCuadraticoMedioTrain)
+    tasaErrorTrain = fallosTrain / len(train) * 100
+    errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
+    listaECMsTrain.append(errorCuadraticoMedioTrain)
+
+# Código para realizar la gráfica del error cuadrático medio en train
+
+# floco = open("ecmPer.txt", "w")
+# for ele in listaECMsTrain:
+#     floco.write(str(ele) + "\n")
+# floco.close()
 
 print("\nÉpocas realizadas:" + str(contadorEpocas))
 print("\nTasa Error en Train: " + str(tasaErrorTrain) + " %")
@@ -183,14 +189,13 @@ print("\nMatriz de confusión en Train:")
 
 titlesX = ['', 'Valor real = 1', 'Valor real = -1']
 titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
-data = [titlesX] + list(zip(titlesY, [VP,FP], [FN,VN]))
+data = [titlesX] + list(zip(titlesY, [VP, FP], [FN, VN]))
 
 for i, d in enumerate(data):
     line = '|'.join(str(x).ljust(len("Valor estimado = -1")) for x in d)
     print(line)
     if i == 0:
-        print('-' * (len(line)+len("Valor estimado = -1")))
-
+        print('-' * (len(line) + len("Valor estimado = -1")))
 
 # TESTEO DE LA RED
 
@@ -200,7 +205,7 @@ VP = 0
 VN = 0
 FP = 0
 FN = 0
-if modo ==3:
+if modo == 3:
     fp.write(str(atributos) + " " + str(clases) + " \n")
 for entrada in test:
     for i, neurona in enumerate(capa0):
@@ -208,7 +213,7 @@ for entrada in test:
     salida = capa1[0].funcionActivacion(b)
     if modo == 3:
         for e in entrada[:-1]:
-            if(e==0):
+            if (e == 0):
                 fp.write("0")
             else:
                 fp.write(str(e))
@@ -223,10 +228,10 @@ for entrada in test:
             fp.write('0\n')
 
     else:
-        errorCuadraticoTest += (entrada[-1] - salida)**2
+        errorCuadraticoTest += (entrada[-1] - salida) ** 2
         if salida != entrada[-1]:
             fallosTest += 1
-            if  entrada[-1]  == -1:
+            if entrada[-1] == -1:
                 FN += 1
             else:
                 FP += 1
@@ -247,10 +252,10 @@ else:
     print("\nMatriz de confusión en Test:")
     titlesX = ['', 'Valor real = 1', 'Valor real = -1']
     titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
-    data = [titlesX] + list(zip(titlesY, [VP,FP], [FN,VN]))
+    data = [titlesX] + list(zip(titlesY, [VP, FP], [FN, VN]))
 
     for i, d in enumerate(data):
         line = '|'.join(str(x).ljust(len("Valor estimado = -1")) for x in d)
         print(line)
         if i == 0:
-            print('-' * (len(line)+len("Valor estimado = -1")))
+            print('-' * (len(line) + len("Valor estimado = -1")))
