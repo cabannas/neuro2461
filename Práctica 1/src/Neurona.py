@@ -146,5 +146,4 @@ class NeuronaAY(Neurona):
 
     def funcionActivacionEntrenamiento(self, b):
         salida = np.sum(self.valores) + b
-        self.valores = np.array([])
         return salida

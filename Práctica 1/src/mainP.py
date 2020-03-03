@@ -88,7 +88,7 @@ if modo == 3:
         datos2 = np.concatenate((datos2, [dato2]))
 
     # Abriendo fichero preficciones
-    fp = open("../predicciones/Perceptron.txt", "w")
+    fp = open("../predicciones/prediccion_perceptron.txt", "w")
 
 # CREACION DE NEURONAS
 
@@ -128,13 +128,13 @@ for neurona in capa0:
 
 listaECMsTrain = []
 contadorEpocas = 0
-VP = 0
-VN = 0
-FP = 0
-FN = 0
 while True:
     errorCuadraticoTrain = 0
     fallosTrain = 0
+    VP = 0
+    VN = 0
+    FP = 0
+    FN = 0
     flag = False  # sin cambios en los pesos
     for entrada in train:
         for i, neurona in enumerate(capa0):
@@ -145,10 +145,10 @@ while True:
             for i, neurona in enumerate(capa0):
                 neurona.enlaceSalida.cambiarPeso(neurona.enlaceSalida.peso + a * entrada[-1] * entrada[i])
             b = b + a * entrada[-1]
-            if salida  == 1:
-                FP += 1
-            else:
+            if entrada[-1]  == -1:
                 FN += 1
+            else:
+                FP += 1
         else:
             if salida == 1:
                 VP += 1
@@ -226,10 +226,10 @@ for entrada in test:
         errorCuadraticoTest += (entrada[-1] - salida)**2
         if salida != entrada[-1]:
             fallosTest += 1
-            if salida  == 1:
-                FP += 1
-            else:
+            if  entrada[-1]  == -1:
                 FN += 1
+            else:
+                FP += 1
         else:
             if salida == 1:
                 VP += 1
