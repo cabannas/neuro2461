@@ -179,7 +179,7 @@ print("\nÉpocas realizadas:" + str(contadorEpocas))
 print("\nTasa Error en Train: " + str(tasaErrorTrain) + " %")
 print("Error cuadrático en Train: " + str(errorCuadraticoMedioTrain))
 
-print("Matriz de confusión en Train:")
+print("\nMatriz de confusión en Train:")
 
 titlesX = ['', 'Valor real = 1', 'Valor real = -1']
 titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
@@ -244,7 +244,7 @@ else:
 
     print("\nTasa Error en Test: " + str(tasaErrorTest) + " %")
     print("Error cuadrático en Test: " + str(errorCuadraticoMedioTest))
-    print("Matriz de confusión en Test:")
+    print("\nMatriz de confusión en Test:")
     titlesX = ['', 'Valor real = 1', 'Valor real = -1']
     titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
     data = [titlesX] + list(zip(titlesY, [VP,FP], [FN,VN]))

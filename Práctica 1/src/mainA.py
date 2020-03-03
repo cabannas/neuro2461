@@ -114,7 +114,6 @@ else:
     train = datos
     test = datos2
 
-
 antiguob = 0
 b = 0
 
@@ -143,7 +142,7 @@ while True:
         salidaTasaError = capa1[0].funcionActivacion(b)
         if salidaTasaError != entrada[-1]:
             fallosTrain += 1
-            if salidaTasaError  == 1:
+            if salidaTasaError == 1:
                 FP += 1
             else:
                 FN += 1
@@ -179,18 +178,17 @@ listaECMsTrain.append(errorCuadraticoMedioTrain)
 print("\nÉpocas realizadas:" + str(contadorEpocas))
 print("\nTasa Error en Train: " + str(tasaErrorTrain) + " %")
 print("Error cuadrático en Train: " + str(errorCuadraticoMedioTrain))
-print("Matriz de confusión en Train:")
+print("\nMatriz de confusión en Train:")
 
 titlesX = ['', 'Valor real = 1', 'Valor real = -1']
 titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
-data = [titlesX] + list(zip(titlesY, [VP,FP], [FN,VN]))
+data = [titlesX] + list(zip(titlesY, [VP, FP], [FN, VN]))
 
 for i, d in enumerate(data):
     line = '|'.join(str(x).ljust(len("Valor estimado = -1")) for x in d)
     print(line)
     if i == 0:
-        print('-' * (len(line)+len("Valor estimado = -1")))
-
+        print('-' * (len(line) + len("Valor estimado = -1")))
 
 # TESTEO DE LA RED
 errorCuadraticoTest = 0
@@ -207,7 +205,7 @@ for entrada in test:
     salida = capa1[0].funcionActivacion(b)
     if modo == 3:
         for e in entrada[:-1]:
-            if(e==0):
+            if (e == 0):
                 fp.write("0")
             else:
                 fp.write(str(e))
@@ -222,10 +220,10 @@ for entrada in test:
             fp.write('0\n')
 
     else:
-        errorCuadraticoTest += (entrada[-1] - salida)**2
+        errorCuadraticoTest += (entrada[-1] - salida) ** 2
         if salida != entrada[-1]:
             fallosTest += 1
-            if salida  == 1:
+            if salida == 1:
                 FP += 1
             else:
                 FN += 1
@@ -243,13 +241,13 @@ else:
 
     print("\nTasa Error en Test: " + str(tasaErrorTest) + " %")
     print("Error cuadrático en Test: " + str(errorCuadraticoMedioTest))
-    print("Matriz de confusión en Test:")
+    print("\nMatriz de confusión en Test:")
     titlesX = ['', 'Valor real = 1', 'Valor real = -1']
     titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
-    data = [titlesX] + list(zip(titlesY, [VP,FP], [FN,VN]))
+    data = [titlesX] + list(zip(titlesY, [VP, FP], [FN, VN]))
 
     for i, d in enumerate(data):
         line = '|'.join(str(x).ljust(len("Valor estimado = -1")) for x in d)
         print(line)
         if i == 0:
-            print('-' * (len(line)+len("Valor estimado = -1")))
+            print('-' * (len(line) + len("Valor estimado = -1")))
