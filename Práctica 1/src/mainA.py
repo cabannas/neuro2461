@@ -1,4 +1,3 @@
-##
 import numpy as np
 from Neurona import *
 from Enlace import *
@@ -11,8 +10,6 @@ import random
 
 if len(sys.argv) < 6:
     print("introduzca la cantidad de parámetros correcta, para mas información utilice el makefile")
-
-modo = 0
 
 modo = 0
 if sys.argv[2].isdigit() and int(sys.argv[2]) < 100:
@@ -91,6 +88,9 @@ if modo == 3:
 
         datos2 = np.concatenate((datos2, [dato2]))
 
+    # Abriendo fichero preficciones
+    fp = open("../predicciones/Adaline.txt", "w")
+
 # CREACION DE NEURONAS
 capa0 = np.array([NeuronaAX() for p in range(atributos)])
 capa1 = np.array([NeuronaAY()])
@@ -128,6 +128,10 @@ for neurona in capa0:
 
 listaECMsTrain = []
 contadorEpocas = 0
+VP = 0
+VN = 0
+FP = 0
+FN = 0
 while True:
     errorCuadraticoTrain = 0
     fallosTrain = 0
@@ -138,7 +142,16 @@ while True:
         salida = capa1[0].funcionActivacionEntrenamiento(b)
         salidaTasaError = capa1[0].funcionActivacion(b)
         if salidaTasaError != entrada[-1]:
-            fallosTrain += 1
+            fallosTest += 1
+            if salidaTasaError  == 1:
+                FP += 1
+            else:
+                FN += 1
+        else:
+            if salidaTasaError == 1:
+                VP += 1
+            else:
+                VN += 1
         errorCuadraticoTrain += (entrada[-1] - salidaTasaError) ** 2
         for i, neurona in enumerate(capa0):
             neurona.enlaceSalida.cambiarPeso(neurona.enlaceSalida.peso + a * (entrada[-1] - salida) * entrada[i])
@@ -151,36 +164,87 @@ while True:
         flag = True
     antiguob = b
 
+    contadorEpocas += 1
     if not flag:
         print("\nEntrenamiento finalizado al no superar la tolerancia al cambiar los pesos o el sesgo.")
         break
-    contadorEpocas += 1
     if contadorEpocas >= maxEpocas:
         print("\nEntrenamiento finalizado al alcanzar el número máximo de épocas.")
         break
 
-    tasaErrorTrain = fallosTrain / len(train) * 100
-    errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
-    listaECMsTrain.append(errorCuadraticoMedioTrain)
+tasaErrorTrain = fallosTrain / len(train) * 100
+errorCuadraticoMedioTrain = errorCuadraticoTrain / len(train)
+listaECMsTrain.append(errorCuadraticoMedioTrain)
 
 print("\nÉpocas realizadas:" + str(contadorEpocas))
 print("\nTasa Error en Train: " + str(tasaErrorTrain) + " %")
-print("Error cuadrático en Train: " + str(errorCuadraticoMedioTrain) + "\n")
+print("Error cuadrático en Train: " + str(errorCuadraticoMedioTrain))
+print("Matriz de confusión en Train:")
+
+titlesX = ['', 'Valor real = 1', 'Valor real = -1']
+titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
+data = [titlesX] + list(zip(titlesY, [VP,FP], [FN,VN]))
+
+for i, d in enumerate(data):
+    line = '|'.join(str(x).ljust(len("Valor estimado = -1")) for x in d)
+    print(line)
+    if i == 0:
+        print('-' * (len(line)+len("Valor estimado = -1")))
+
 
 # TESTEO DE LA RED
 errorCuadraticoTest = 0
 fallosTest = 0
+VP = 0
+VN = 0
+FP = 0
+FN = 0
 for entrada in test:
     for i, neurona in enumerate(capa0):
         neurona.recibirSenal(entrada[i])
     salida = capa1[0].funcionActivacion(b)
-    errorCuadraticoTest += (entrada[-1] - salida)**2
-    if salida != entrada[-1]:
-        fallosTest += 1
+    if modo == 3:
+        for e in entrada[:-2]:
+            fp.write(str(e))
+            fp.write(" ")
+        if salida == 1:
+            fp.write('1 ')
+        else:
+            fp.write('0 ')
+        if salida == -1:
+            fp.write('1\n')
+        else:
+            fp.write('0\n')
 
-tasaErrorTest = fallosTest / len(test) * 100
-errorCuadraticoMedioTest = errorCuadraticoTest / len(test)
+    else:
+        errorCuadraticoTest += (entrada[-1] - salida)**2
+        if salida != entrada[-1]:
+            fallosTest += 1
+            if salida  == 1:
+                FP += 1
+            else:
+                FN += 1
+        else:
+            if salida == 1:
+                VP += 1
+            else:
+                VN += 1
 
-print("Tasa Error en Test: " + str(tasaErrorTest) + " %")
-print("Error cuadrático en Test: " + str(errorCuadraticoMedioTest) + "\n")
+if modo == 3:
+    fp.close()
+else:
+    tasaErrorTest = fallosTest / len(test) * 100
+    errorCuadraticoMedioTest = errorCuadraticoTest / len(test)
 
+    print("\nTasa Error en Test: " + str(tasaErrorTest) + " %")
+    print("Error cuadrático en Test: " + str(errorCuadraticoMedioTest))
+    print("Matriz de confusión en Test:")
+    titlesX = ['', 'Valor real = 1', 'Valor real = -1']
+    titlesY = ['Valor estimado = 1', 'Valor estimado = -1']
+    data = [titlesX] + list(zip(titlesY, [VP,FP], [FN,VN]))
+
+    for i, d in enumerate(data):
+        line = '|'.join(str(x).ljust(len("Valor estimado = -1")) for x in d)
+        print(line)
+        if i == 0:
+            print('-' * (len(line)+len("Valor estimado = -1")))

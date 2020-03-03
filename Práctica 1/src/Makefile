@@ -39,14 +39,19 @@ per_help:
 	@echo Con \"make per_exec_puertas_logicas\" pueden ver otros ejemplos de ejecuciones con puertas lógicas.
 
 per_exec:
-	@echo un ejemplo de ejecución:
+	@echo Un ejemplo de ejecución:
 	python3 mainP.py ../data/problema_real2.txt 75 0.2 0.3 2000
 
 per_exec_puertas_logicas:
-	@echo tres ejemplos de ejecución en modo 2:
+	@echo Tres ejemplos de ejecución en modo 2:
 	python3 mainP.py ../data/nand.txt 100 0.2 0.1 100
+	@echo
 	python3 mainP.py ../data/nor.txt 100 0.2 0.1 100
+	@echo
 	python3 mainP.py ../data/xor.txt 100 0.2 0.1 100
+	@echo
+	@echo Ejemplo en modo 3
+	python3 mainP.py ../data/problema_real2.txt ../data/problema_real2_no_etiquetados.txt 0.2 0.3 2000
 
 ada_help:
 	@echo ada_help: explicación de los argumentos necesarios para ejecutar el programa adaline
@@ -70,11 +75,16 @@ ada_help:
 	@echo Con \"make ada_exec_puertas_logicas\" pueden ver otros ejemplos de ejecuciones con puertas lógicas.
 
 ada_exec:
-	@echo un ejemplo de ejecución:
+	@echo Un ejemplo de ejecución:
 	python3 mainA.py ../data/problema_real2.txt 70 0.2 0.01 0.1 3000
 
 ada_exec_puertas_logicas:
-	@echo tres ejemplos de ejecución en modo 2:
+	@echo Tres ejemplos de ejecución en modo 2:
 	python3 mainA.py ../data/nand.txt 100 0.2 0.01 0.1 100
+	@echo
 	python3 mainA.py ../data/nor.txt 100 0.2 0.01 0.1 100
-	python3 mainA.py ../data/xor.txt 100 0.2 0.05 0.1 100
+	@echo
+	python3 mainA.py ../data/xor.txt 100 0.2 0.01 0.1 100
+	@echo
+	@echo Ejemplo en modo 3
+	python3 mainA.py ../data/problema_real2.txt ../data/problema_real2_no_etiquetados.txt 0.2 0.01 0.1 3000
