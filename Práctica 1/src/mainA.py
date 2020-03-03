@@ -142,7 +142,7 @@ while True:
         salida = capa1[0].funcionActivacionEntrenamiento(b)
         salidaTasaError = capa1[0].funcionActivacion(b)
         if salidaTasaError != entrada[-1]:
-            fallosTest += 1
+            fallosTrain += 1
             if salidaTasaError  == 1:
                 FP += 1
             else:
@@ -199,13 +199,18 @@ VP = 0
 VN = 0
 FP = 0
 FN = 0
+if modo == 3:
+    fp.write(str(atributos) + " " + str(clases) + " \n")
 for entrada in test:
     for i, neurona in enumerate(capa0):
         neurona.recibirSenal(entrada[i])
     salida = capa1[0].funcionActivacion(b)
     if modo == 3:
-        for e in entrada[:-2]:
-            fp.write(str(e))
+        for e in entrada[:-1]:
+            if(e==0):
+                fp.write("0")
+            else:
+                fp.write(str(e))
             fp.write(" ")
         if salida == 1:
             fp.write('1 ')
